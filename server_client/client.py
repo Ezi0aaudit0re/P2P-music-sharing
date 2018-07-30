@@ -21,18 +21,23 @@ class Client:
 
        # make the connection
        self.s.connect((addr, PORT))
+
+       self.previous_data = None
     
        # create to work on a different thread
-       #i_thread = threading.Thread(target=self.recieve_message)
-       #i_thread.daemon = True
-       #i_thread.start()
+       i_thread = threading.Thread(target=self.send_message)
+       i_thread.daemon = True
+       i_thread.start()
 
        # send the message requesting data
-       self.send_message()
 
     
 
        while True:
+
+           r_thread = threading.Thread(target=self.recieve_message)
+           r_thread.start()
+           r_thread.join()
 
            data = self.recieve_message()
 
@@ -53,15 +58,22 @@ class Client:
         This thread will deal with printing the recieved message
     """
     def recieve_message(self):
-       print("Recieving -------")
-       data = self.s.recv(BYTE_SIZE)
+       try:
+           print("Recieving -------")
+           data = self.s.recv(BYTE_SIZE)
 
-       print("\nRecieved message on the client side is:")
+           print(data.decode("utf-8"))
 
-       file = convert_to_music(data)
-       # TODO download the file to the computer
-        
-       return data
+           print("\nRecieved message on the client side is:")
+
+           if self.previous_data != data:
+               fileIO.create_file(data)
+               self.previous_data = data
+           # TODO download the file to the computer
+            
+           return data
+       except KeyboardInterrupt:
+           self.send_disconnect_signal()
 
 
 
