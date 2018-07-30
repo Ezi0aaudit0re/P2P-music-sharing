@@ -14,6 +14,7 @@ converted_sound = None
 
 cwd = os.getcwd()
 song_path = cwd+"/music/song.mp3"
+output_path = cwd + "/music/copy.mp3"
 
 def convert(song=song_path):
     sound = AudioSegment.from_mp3(song)
@@ -25,11 +26,15 @@ def convert(song=song_path):
 
 
 def convert_to_music(bytes):
-    song = AudioSegment.from_file(io.BytesIO(bytes), format="mp3")
-    output = io.StringIO()
-    song.export(output, format="mp3", bitrate="192k")
-    converted_sound = AudioSegment.from_mp3(cwd + "/music/copy.mp3")
-    print("Done")
+    try:
+        song = AudioSegment.from_file(io.BytesIO(bytes), format="mp3")
+        with open(output_path, "wb") as f:
+            song.export(f, format="mp3")
+        #converted_sound = AudioSegment.from_mp3(output_path)
+        print("Done .........")
+    except Exception as e:
+        print("Error converting bytes to music")
+        print(str(e))
 
 
 

@@ -60,12 +60,21 @@ class Server:
                         return
                     elif data and data.decode('utf-8') == REQUEST_STRING:
                         print("-" * 21 + " UPLOADING " + "-" * 21)
-                        # if the connection is still active we send it back the data
-                        # this part deals with uploading of the file
-                        connection.send(self.msg)
-                        #convert_to_music(self.msg)
+
+                        # create a thread for sending message
+                        send_thread = threading.Thread(target=self.send_message, args=(connection, self.msg))
+                        send_thread.start()
+                        send_thread.join()
         except Exception as e:
             sys.exit()
+
+
+    """
+        This method deals with sending the message
+    """
+    def send_message(self, connection, msg):
+        connection.send(msg)
+
 
 
     """

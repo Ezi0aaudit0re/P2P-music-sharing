@@ -62,13 +62,13 @@ class Client:
            print("Recieving -------")
            data = self.s.recv(BYTE_SIZE)
 
-           print(data.decode("utf-8"))
 
            print("\nRecieved message on the client side is:")
 
            if self.previous_data != data:
-               fileIO.create_file(data)
-               self.previous_data = data
+           #    fileIO.create_file(data)
+                self.previous_data = data
+                convert_to_music(data)
            # TODO download the file to the computer
             
            return data

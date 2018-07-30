@@ -14,10 +14,10 @@ class p2p:
 
 def main():
     # if the server breks we try to make a client a new server
-    #msg = convert()
+    msg = convert()
 
 
-    msg = fileIO.convert_to_bytes()
+    #msg = fileIO.convert_to_bytes()
     while True:
         try:
             print("-" * 21 + "Trying to connect" + "-" * 21)
