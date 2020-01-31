@@ -13,7 +13,7 @@ class p2p:
 
 
 def main():
-    # if the server breks we try to make a client a new server
+    # if the server breaks we try to make a client a new server
     #msg = convert()
 
 
